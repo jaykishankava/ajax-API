@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todos api</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <center>
+    <div class="mb-3 mt-2">
+    <button onclick="alltrue()"   style="border:none;width:80px;display:inline-block; padding:10px; margin-left:10px; border-radius:50px;background-color: blue;color: white;font-weight: 700;">True</button>
+    <button onclick="allfalse()"  style="border:none;width:80px;display:inline-block; padding:10px; margin-left:10px; border-radius:50px;background-color: blue;color: white;font-weight: 700;">False</button>
+    <button onclick="showAll()"  style="border:none;width:80px;display:inline-block; padding:10px; margin-left:10px; border-radius:50px;background-color: blue;color: white;font-weight: 700;">All</button>
+        </div>
+    
+    <table class="table  table-bordered border-primary w-75">
+    <tr align="center">
+        <th style="color:#177412;">Id</th>
+        <th style="color:#177412;">Todo</th>
+        <th style="color:#177412;">UserId</th>
+        <th style="color:#177412;">Completed</th>
+       
+    </tr>
+    <tbody id="record"></tbody>
+      </table>
+    </center>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    let todos;
+    $.ajax({
+        type:"get",
+        url:"https://dummyjson.com/todos",
+        success:function(rec){
+            todos=rec.todos;
+            let tbl="";
+            todos.map((val)=>{
+                return(
+                    tbl += `
+                        <tr>
+                            <td style="color:#707178;">${val.id}</td>
+                            <td style="color:#707178;">${val.todo}</td>
+                            <td style="color:#707178;">${val.userId}</td> 
+                            <td style="color:#707178;">${val.completed}</td> 
+                           
+                            </tr>`
+                )
+            })
+           
+        }
+    });
+
+    const alltrue = () =>{
+        let todo=todos.filter((todo)=>todo.completed == true);
+        let tbl="";
+        todo.map((val)=>{
+                    tbl += `
+                    <tr>
+                        <td style="color:#0502D0;">${val.id}</td>
+                        <td style="color:#0502D0;">${val.todo}</td>
+                        <td style="color:#0502D0;">${val.completed}</td> 
+                        <td style="color:#0502D0;">${val.userId}</td> 
+                    </tr>`
+        })
+        document.getElementById('record').innerHTML=tbl;  
+    }
+
+    const allfalse = () =>{
+        let todo=todos.filter((todo)=>todo.completed == false);
+        let tbl="";
+        todo.map((val)=>{
+                    tbl += `
+                    <tr>
+                        <td style="color:red;">${val.id}</td>
+                        <td style="color:red;">${val.todo}</td>
+                        <td style="color:red;">${val.completed}</td> 
+                        <td style="color:red;">${val.userId}</td> 
+                    </tr>`
+        })
+        document.getElementById('record').innerHTML=tbl;
+    }
+
+    const showAll = () =>{
+        let tbl="";
+        todos.map((val)=>{
+                    tbl += `
+                    <tr>
+                        <td>${val.id}</td>
+                        <td>${val.todo}</td>
+                        <td>${val.completed}</td> 
+                        <td>${val.userId}</td> 
+                    </tr>`
+        })
+        document.getElementById('record').innerHTML=tbl;
+    }
+</script>
+</html>
